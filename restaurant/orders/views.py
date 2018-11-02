@@ -51,3 +51,24 @@ def customer_home(request,pk):
 
 def home(request):
 	return render(request, 'home.html')
+
+def manager_signup(request):
+	if request.method == "POST":
+		man_id = request.POST['man_id']
+		first_name = request.POST['first_name']
+		last_name = request.POST['last_name']
+		username = request.POST['username']
+		email = request.POST['email']
+		password = request.POST['password']
+		user = User(username=username, first_name=first_name, last_name=last_name, email=email, user_type=1)
+		user.set_password(password)
+		user.save()
+		manager = Manager(man_id=man_id, user=user)
+		manager.save()
+		return redirect('manager_home', pk=manager.man_id)
+	else:
+		return render(request, 'manager_signup.html')
+
+def manager_home(request,pk):
+	manager = get_object_or_404(Manager, pk=pk)
+	return render(request, 'manager_home.html', {'manager': manager})		

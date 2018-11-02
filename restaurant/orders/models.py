@@ -14,6 +14,11 @@ class User(AbstractUser):
 
     user_type = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES, default=3)
 
+class Manager(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
+    man_id = models.IntegerField(primary_key=True,default=1)
+    
+
 class Restaurant(models.Model):
 	rest_id = models.IntegerField(primary_key=True, default=1007)
 	name = models.CharField(max_length = 255)
@@ -21,11 +26,8 @@ class Restaurant(models.Model):
 	city = models.CharField(max_length = 255)
 	state = models.CharField(max_length = 255)
 	country = models.CharField(max_length = 255)
+	man_id = models.ForeignKey(Manager,on_delete = models.CASCADE, default=1)
 
-class Manager(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
-    rest_id = models.ForeignKey(Restaurant, on_delete=models.CASCADE, default=1007)
-    
 
 class Customer(models.Model):
 	cust_id = models.IntegerField(primary_key=True, default=123)

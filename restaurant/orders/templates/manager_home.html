@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Manager home{% endblock %}
+{% block body %}
+    <h3>Manager</h3>
+    <div class="container">
+        <div class="row">
+            <div class="card border-primary mb-3" style="max-width: 20rem;">
+              <div class="card-header">Manager Details</div>
+                  <div class="card-body">
+                    <h6 class="card-title"><b>Name:</b> {{ manager.user.first_name }} {{ manager.user.last_name }}</h6>
+                  </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
