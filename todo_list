@@ -1,0 +1,23 @@
+1.home page : cards of login and signup (manager / customer)
+  signup (manager / customer) done
+2.about page, contact 
+
+    * search restaurants by name/city
+3. on login/ signup  as customer ->  list of restaurants -> click on restaurant -> restaurant page (menu, items , quantity(default 0)) -> 
+    ->  submit button -> bill page -> generate pdf bill 
+    
+    * customer home should have view_my_orders button 
+    
+    
+    * add quantity, restaurant id  in order class
+4. manager login/signup -> manager home -> add restaurant -> register_restaurant page (restaurant name and menu (add item button)) 
+   
+   * order should be reflected here
+   
+   manager should be able to view all the order of his restaurants : view_orders_manager
+5. feedback button
+
+
+   
+   
+   
