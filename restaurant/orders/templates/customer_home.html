@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Staff Report Generation{% endblock %}
+{% block body %}
+    <h3>Customer</h3>
+    <div class="container">
+        <div class="row">
+            <div class="card border-primary mb-3" style="max-width: 20rem;">
+              <div class="card-header">Customer Details</div>
+                  <div class="card-body">
+                    <h6 class="card-title"><b>Name:</b> {{ customer.user.first_name }} {{ customer.user.last_name }}</h6>
+                  </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
