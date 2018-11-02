@@ -27,9 +27,6 @@
 ### Running the project
 
 - `cd ~/Restaurant-Ordering/orders`
-- Add these two lines in `__init__.py`:
-<br> `import pymysql `
-<br> `pymysql.install_as_MySQLdb()`
 - `python manage.py makemigrations`
 - `python manage.py sqlmigrate orders 0001`
 - `python manage.py migrate`
