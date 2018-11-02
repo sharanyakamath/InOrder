@@ -36,7 +36,7 @@ def customer_login(request):
             if user.is_active:
                 if user.user_type == 2:
                     login(request, user)
-                    return redirect('customer_home') #, pk=user.security.id)
+                    return redirect('customer_home',pk=user.customer.cust_id) 
                 else:
                     return render(request, 'customer_login.html', {'error_message': 'Invalid security staff credentials'})
             else:
@@ -44,6 +44,25 @@ def customer_login(request):
         else:
             return render(request, 'customer_login.html', {'error_message': 'Invalid login'})
     return render(request, 'customer_login.html')
+
+
+def manager_login(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                if user.user_type == 1:
+                    login(request, user)
+                    return redirect('manager_home', pk= user.manager.man_id) #, pk=user.security.id)
+                else:
+                    return render(request, 'manager_login.html', {'error_message': 'Invalid manager credentials'})
+            else:
+                return render(request, 'manager_login.html', {'error_message': 'Your account has been disabled'})
+        else:
+            return render(request, 'manager_login.html', {'error_message': 'Invalid login'})
+    return render(request, 'manager_login.html')    
 
 def customer_home(request,pk):
 	customer = get_object_or_404(Customer, pk=pk)
