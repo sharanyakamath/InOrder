@@ -27,7 +27,7 @@ class Restaurant(models.Model):
 	state = models.CharField(max_length = 255)
 	country = models.CharField(max_length = 255)
 	man_id = models.ForeignKey(Manager,on_delete = models.CASCADE, default=1)
-
+	image = models.ImageField(upload_to='restaurant',default=None)
 
 class Customer(models.Model):
 	cust_id = models.IntegerField(primary_key=True, default=123)

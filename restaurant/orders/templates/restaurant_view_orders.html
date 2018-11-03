@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Bill Details{% endblock %}
+{% block body %}
+	<h3>Bill Details</h3>
+    <div class="container">
+        <div class="row">
+            <div class="card border-secondary mb-3" style="max-width: 20rem;">
+                  <div class="card-body">
+                  	{% for bill in bills %}
+
+                    <h6 class="card-title"><b>Bill ID: {{bill.bill_id}}</b> </h6>
+                    
+                    <h6 class="card-title"><b>Total : Rs.{{bill.total}} </b></h6>
+                    <a role ="button" href="{% url 'placed' bill.bill_id %}">View the Items</a>
+                    {% endfor %}
+                  </div>
+            </div>
+        </div>
+     </div>
+     <br>
+{% endblock %}     

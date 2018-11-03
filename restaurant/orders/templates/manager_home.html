@@ -33,6 +33,9 @@
           <td>
           <a href="{% url 'reg_restaurant_home' restaurant.rest_id %}" class="btn btn-outline-danger" role="button">View</a>
           </td>
+          <td>
+          <a href="{% url 'restaurant_view_orders' restaurant.rest_id %}" class="btn btn-outline-danger" role="button">View Orders of this Restaurant</a>
+          </td>
         </tr>
     {% endfor %}
   </tbody>

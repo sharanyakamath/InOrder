@@ -20,4 +20,5 @@ urlpatterns = [
     path('place_order/<int:rest_id>/<int:cust_id>', views.place_order, name='place_order'),
     path('placed/<int:pk>',views.placed,name='placed'), 
     path('bill_pdf/<int:pk>',views.bill_pdf,name='bill_pdf'),
+    path('restaurant_view_orders/<int:pk>',views.restaurant_view_orders,name='restaurant_view_orders'),
 ]

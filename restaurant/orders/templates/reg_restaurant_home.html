@@ -5,12 +5,14 @@
     <div class="container">
         <div class="row">
             <div class="card border-primary mb-3" style="max-width: 20rem;">
-              <div class="card-header">Details</div>
+              <div class="card-header">Restaurant Details</div>
                   <div class="card-body">
+                    <img src="{{restaurant.image.url}}" style="height:250px; width:250px; float:center; margin-bottom: 10px;">
                     <h6 class="card-title"><b>Address:</b> {{ restaurant.address }}</h6>
                     <h6 class="card-title"><b>City:</b> {{ restaurant.city }}</h6>
                     <h6 class="card-title"><b>State:</b> {{ restaurant.state }}</h6>
                     <h6 class="card-title"><b>Country:</b> {{ restaurant.country }}</h6>
+
                   </div>
             </div>
         </div>

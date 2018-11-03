@@ -110,11 +110,13 @@ def register_restaurant(request,pk):
 		city = request.POST['city']
 		state = request.POST['state']
 		country = request.POST['country']
-		restaurant = Restaurant(rest_id=rest_id,name=name,address=address,city=city,state=state,country=country, man_id=manager)		
+		image = request.FILES['image']
+		restaurant = Restaurant(rest_id=rest_id,name=name,address=address,city=city,state=state,country=country,image=image,man_id=manager)		
 		restaurant.save()
 		return redirect('reg_restaurant_home' , pk=restaurant.pk)
 	else:
-		return render(request, 'register_restaurant.html' , {'man_id' : request.user.manager.man_id })
+		manager = Manager.objects.get(pk=pk)
+		return render(request, 'register_restaurant.html' , {'manager' : manager })
 
 def reg_restaurant_home(request,pk):
 	restaurant = get_object_or_404(Restaurant, pk=pk)
@@ -192,3 +194,7 @@ def bill_pdf(request, pk):
 	response = HttpResponse(content_type="application/pdf")
 	response.write(output)
 	return response
+
+def restaurant_view_orders(request,pk):
+	bills = Bill.objects.filter(rest_id=pk)
+	return render(request,'restaurant_view_orders.html',{'bills':bills})

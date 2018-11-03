@@ -7,7 +7,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
 
-                        <form role="form" action="{% url 'register_restaurant' pk=man_id %}" method="post" enctype="multipart/form-data">
+                        <form role="form" action="{% url 'register_restaurant' manager.man_id %}" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                           <fieldset>
                             <legend>Enter Restaurant details</legend>
@@ -33,8 +33,12 @@
                             </div>
                             <div class="form-group">
                               <label for="country">Country</label>
-                              <input type="text" class="form-control" id="Password" name="country" placeholder="Enter country">
+                              <input type="text" class="form-control" id="country" name="country" placeholder="Enter country">
                             </div>
+                            <div class="form-group">
+                              <label for="image">Image</label>
+                              <input type="file" class="form-control" id="image" name="image" placeholder="Enter image">
+                            </div>                            
                             <button type="submit" class="btn btn-primary">Register</button>
                           </fieldset>
                         </form>
