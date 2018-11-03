@@ -4,12 +4,33 @@
     <h3>Customer</h3>
     <div class="container">
         <div class="row">
-            <div class="card border-primary mb-3" style="max-width: 20rem;">
+            <div class="card border-secondary mb-3" style="max-width: 20rem;">
               <div class="card-header">Customer Details</div>
                   <div class="card-body">
                     <h6 class="card-title"><b>Name:</b> {{ customer.user.first_name }} {{ customer.user.last_name }}</h6>
                   </div>
             </div>
         </div>
+     </div>
+     <div class="container">
+        {% for restaurant in restaurants %}
+
+        <li  style="float:left; margin: 5px;">
+        <div class="col s12 m7">
+          <div class="card medium" style="width:250px; height:400px;">
+          <div class="card-header">{{ restaurant.name }}</div>
+          <div class="card-body">
+             <!--  <h4 class="card-title"><b>Name:</b> {{ restaurant.name}}</h4> -->
+              <h5 class="card-title"><b>ID:</b> {{ restaurant.rest_id }}</h5>
+              <h6 class="card-title"><b>City:</b> {{ restaurant.city}}</h6>
+              <h7 class="card-title"><b>State:</b> {{ restaurant.state}}</h7>
+              <h8 class="card-title"><b>Country:</b> {{ restaurant.country}}</h8>
+            
+          </div>
+           </div>
+        </div>
+       </li>
+      {% endfor %}
     </div>
+   
 {% endblock %}

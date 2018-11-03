@@ -64,9 +64,7 @@ def manager_login(request):
             return render(request, 'manager_login.html', {'error_message': 'Invalid login'})
     return render(request, 'manager_login.html')    
 
-def customer_home(request,pk):
-	customer = get_object_or_404(Customer, pk=pk)
-	return render(request, 'customer_home.html', {'customer': customer})
+
 
 def home(request):
 	return render(request, 'home.html')
@@ -96,6 +94,12 @@ def manager_home(request,pk):
 	manager = get_object_or_404(Manager, pk=pk)
 	restaurants = Restaurant.objects.filter(man_id=pk)
 	return render(request, 'manager_home.html', {'manager': manager, 'restaurants':restaurants})
+
+def customer_home(request,pk):
+	customer = get_object_or_404(Customer, pk=pk)
+	restaurants = Restaurant.objects.all()
+	return render(request, 'customer_home.html', {'customer': customer, 'restaurants': restaurants})
+
 
 def register_restaurant(request,pk):
 	if request.method == "POST":
