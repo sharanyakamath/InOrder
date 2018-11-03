@@ -90,4 +90,24 @@ def manager_signup(request):
 
 def manager_home(request,pk):
 	manager = get_object_or_404(Manager, pk=pk)
-	return render(request, 'manager_home.html', {'manager': manager})		
+	return render(request, 'manager_home.html', {'manager': manager})
+
+def register_restaurant(request,pk):
+	if request.method == "POST":
+		manager = Manager.objects.get(pk=pk)
+		rest_id = request.POST['rest_id']
+		name = request.POST['name']
+		address = request.POST['address']
+		city = request.POST['city']
+		state = request.POST['state']
+		country = request.POST['country']
+		restaurant = Restaurant(rest_id=rest_id,name=name,address=address,city=city,state=state,country=country, man_id=manager)		
+		restaurant.save()
+		return redirect('reg_restaurant_home' , pk=restaurant.pk)
+	else:
+		return render(request, 'register_restaurant.html' , {'man_id' : request.user.manager.man_id} )
+
+def reg_restaurant_home(request,pk):
+	restaurant = get_object_or_404(Restaurant, pk=pk)
+	return render(request, 'reg_restaurant_home.html', {'restaurant': restaurant})
+

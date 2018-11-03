@@ -44,4 +44,5 @@ class Item(models.Model):
 class Order(models.Model):
 	cust_id = models.ForeignKey(Customer, on_delete=models.CASCADE, default=123)
 	item_id = models.ForeignKey(Item, on_delete=models.CASCADE, default=1)
-
+	rest_id = models.ForeignKey(Restaurant, on_delete=models.CASCADE, default=1007)
+	quantity = models.IntegerField(default=0)
