@@ -114,7 +114,8 @@ def register_restaurant(request,pk):
 
 def reg_restaurant_home(request,pk):
 	restaurant = get_object_or_404(Restaurant, pk=pk)
-	return render(request, 'reg_restaurant_home.html', {'restaurant': restaurant})
+	items = Item.objects.filter(rest_id=pk)
+	return render(request, 'reg_restaurant_home.html', {'restaurant': restaurant, 'items':items})
 
 def add_item(request,pk):
 	if request.method == "POST":
