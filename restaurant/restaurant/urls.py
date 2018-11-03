@@ -23,8 +23,8 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
 	url(r'^$',orders_views.home,name='home'),
-    url(r'^login/$',auth_views.login,{'template_name':'login.html'}, name='login'),
-    url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
+    # url(r'^login/$',auth_views.login,{'template_name':'login.html'}, name='login'),
+    # url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
     path('admin/', admin.site.urls),
     path('orders/', include('orders.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

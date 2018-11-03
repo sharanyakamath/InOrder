@@ -25,14 +25,14 @@
       <li class="nav-item {% if url_name == 'about' %} active {% endif %}">
         <a class="nav-link" href="{% url 'about' %}">About</a>
       </li>
-<<<<<<< HEAD
-      <li>{% if user.is_authenticated %}
+
+      {% comment %} <li>{% if user.is_authenticated %}
         <a class="nav-link" href="{% url 'logout' %}">Logout</a>
           {% else %}
             <a class="nav-link" href="#">Login</a>
         {% endif %}
       </li>
-=======
+
 
       {% if user.is_authenticated %}
 
@@ -41,7 +41,7 @@
       </li>
         {% endif %}
 
->>>>>>> 7cb3a0fe2a3456870ac2c8ff1d7e0a5a91d4e82b
+    {% endcomment %}
     </ul>
    {% endwith %} 
   </div>

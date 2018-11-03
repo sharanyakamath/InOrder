@@ -121,6 +121,11 @@ def reg_restaurant_home(request,pk):
 	items = Item.objects.filter(rest_id=pk)
 	return render(request, 'reg_restaurant_home.html', {'restaurant': restaurant, 'items':items})
 
+def view_my_order(request,pk):
+	customer = get_object_or_404(Customer, pk=pk)
+	bills = Bill.objects.filter(cust_id=pk)
+	return render(request, 'view_my_order.html', {'customer': customer, 'bills': bills})	
+
 def add_item(request,pk):
 	if request.method == "POST":
 		restaurant=Restaurant.objects.get(pk=pk)

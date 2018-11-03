@@ -15,6 +15,7 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('register_restaurant/<int:pk>', views.register_restaurant, name='register_restaurant'),
     path('reg_restaurant_home/<int:pk>', views.reg_restaurant_home, name='reg_restaurant_home'),
+    path('view_my_order/<int:pk>', views.view_my_order, name='view_my_order'),
     path('add_item/<int:pk>', views.add_item, name='add_item'),  
     path('restaurant_home/<int:pk>',views.restaurant_home,name='restaurant_home'), 
     path('place_order/<int:rest_id>/<int:cust_id>', views.place_order, name='place_order'),
