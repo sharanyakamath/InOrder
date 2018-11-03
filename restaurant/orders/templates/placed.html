@@ -9,7 +9,7 @@
                   <div class="card-body">
                   	{% for order in orders %}
 
-                    <h6 class="card-title"><b>{{order.item_id.name}} : </b>{{order.quantity}}</h6>
+                    <h6 class="card-title"><b>{{order.item_id.name}} : </b> {{order.item_id.cost}}*{{order.quantity}} </h6>
                     {% endfor %}
                     <h6 class="card-title"><b>Total : Rs.{{bill.total}} </b></h6>
                   </div>

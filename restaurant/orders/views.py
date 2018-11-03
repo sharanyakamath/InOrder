@@ -171,7 +171,7 @@ def place_order(request, rest_id, cust_id):
 		for item in items:
 			quantity = request.POST['quantity'+str(item.pk)]
 			order = Order(bill_id=bill, item_id=item, quantity=quantity)
-			total = total + int(item.cost)
+			total = total + item.cost*int(quantity)
 			order.save()
 		bill.total=total	
 		bill.save()	
