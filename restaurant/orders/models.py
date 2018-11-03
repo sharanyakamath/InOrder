@@ -41,8 +41,13 @@ class Item(models.Model):
 	image = models.ImageField(upload_to='item')
 	rest_id = models.ForeignKey(Restaurant, on_delete=models.CASCADE, default=1007)
 
-class Order(models.Model):
+class Bill(models.Model):
+	bill_id = models.IntegerField(primary_key=True, default=2)
 	cust_id = models.ForeignKey(Customer, on_delete=models.CASCADE, default=123)
-	item_id = models.ForeignKey(Item, on_delete=models.CASCADE, default=1)
 	rest_id = models.ForeignKey(Restaurant, on_delete=models.CASCADE, default=1007)
+	total = models.IntegerField(default=0)
+
+class Order(models.Model):
+	bill_id = models.ForeignKey(Bill, on_delete=models.CASCADE, default=2)
+	item_id = models.ForeignKey(Item, on_delete=models.CASCADE, default=1)
 	quantity = models.IntegerField(default=0)
