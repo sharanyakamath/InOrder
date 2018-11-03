@@ -14,4 +14,5 @@ urlpatterns = [
     path('manager_login', views.manager_login, name='manager_login'),
     path('register_restaurant/<int:pk>', views.register_restaurant, name='register_restaurant'),
     path('reg_restaurant_home/<int:pk>', views.reg_restaurant_home, name='reg_restaurant_home'),
+    path('add_item/<int:pk>', views.add_item, name='add_item'),    
 ]

@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import User, Customer, Manager, Restaurant, Item, Order
 import datetime
 import pdfkit
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 
 # Create your views here.
@@ -110,4 +110,23 @@ def register_restaurant(request,pk):
 def reg_restaurant_home(request,pk):
 	restaurant = get_object_or_404(Restaurant, pk=pk)
 	return render(request, 'reg_restaurant_home.html', {'restaurant': restaurant})
+
+def add_item(request,pk):
+	if request.method == "POST":
+		restaurant=Restaurant.objects.get(pk=pk)
+		item_id = request.POST['item_id']
+		name = request.POST['name']
+		cost = request.POST['cost']
+		description = request.POST['description']
+		image = request.FILES['image']
+		#print(image)
+		#print(description)
+		item = Item(item_id=item_id,name=name,cost=cost,image=image,description=description,rest_id=restaurant)
+		item.save()
+		return HttpResponseRedirect('/orders/add_item/' + str(pk))
+	else:
+		restaurant=Restaurant.objects.get(pk=pk)
+		return render(request,'add_item.html',{'restaurant': restaurant})	
+
+
 
