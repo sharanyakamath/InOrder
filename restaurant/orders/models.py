@@ -51,3 +51,8 @@ class Order(models.Model):
 	bill_id = models.ForeignKey(Bill, on_delete=models.CASCADE, default=2)
 	item_id = models.ForeignKey(Item, on_delete=models.CASCADE, default=1)
 	quantity = models.IntegerField(default=0)
+
+class Feedback(models.Model):
+	feed_back = models.TextField(max_length = 255)
+	cust_id = models.ForeignKey(Customer,on_delete=models.CASCADE, default=123)
+	rest_id = models.ForeignKey(Restaurant,on_delete=models.CASCADE, default=1007)

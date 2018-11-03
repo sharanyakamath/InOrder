@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
-from .models import User, Customer, Manager, Restaurant, Item, Order, Bill
+from .models import User, Customer, Manager, Restaurant, Item, Order, Bill, Feedback
 
 
 class UserCreationForm(forms.ModelForm):
@@ -47,5 +47,6 @@ admin.site.register(Restaurant)
 admin.site.register(Order)
 admin.site.register(Item)
 admin.site.register(Bill)
+admin.site.register(Feedback)
 
 

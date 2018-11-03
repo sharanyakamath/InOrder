@@ -25,4 +25,5 @@ urlpatterns = [
     path('search_by_city/<int:pk>',views.search_by_city,name='search_by_city'),
     path('search_by_name/<int:pk>',views.search_by_name,name='search_by_name'),
     path('delete_item/<int:pk>',views.delete_item,name='delete_item'),
+    path('feedback/<int:rest_id>/<int:cust_id>/<int:bill_id>',views.feedback,name='feedback'),
 ]

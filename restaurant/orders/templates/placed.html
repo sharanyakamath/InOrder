@@ -19,4 +19,5 @@
      </div>
      <br>
      <a href="{% url 'bill_pdf' bill.pk %}" class="btn btn-outline-success" role="button">Download Bill</a>
+     <a href="{% url 'feedback' rest_id=bill.rest_id.rest_id cust_id=bill.cust_id.cust_id bill_id=bill.pk %}" class="btn btn-outline-success" role="button">Review the Restaurant</a>
 {% endblock %}
