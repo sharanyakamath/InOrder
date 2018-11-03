@@ -19,7 +19,7 @@ from django.conf.urls import url,include
 from orders import views as orders_views
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.auth import views as auth_views
+# from django.contrib.auth import views as auth_views
 
 urlpatterns = [
 	url(r'^$',orders_views.home,name='home'),

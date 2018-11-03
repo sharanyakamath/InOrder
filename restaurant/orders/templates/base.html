@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
     {% load staticfiles %}
-<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.3/sandstone/bootstrap.min.css" rel="stylesheet">    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.3/sandstone/bootstrap.min.css" rel="stylesheet">    
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
@@ -26,22 +28,9 @@
         <a class="nav-link" href="{% url 'about' %}">About</a>
       </li>
 
-      {% comment %} <li>{% if user.is_authenticated %}
-        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-          {% else %}
-            <a class="nav-link" href="#">Login</a>
-        {% endif %}
-      </li>
 
-
-      {% if user.is_authenticated %}
-
-      <li class="nav-item">
-        <a class="nav-link" href="#">Logout</a>
-      </li>
-        {% endif %}
-
-    {% endcomment %}
+      
+      
     </ul>
    {% endwith %} 
   </div>

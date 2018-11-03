@@ -21,4 +21,6 @@ urlpatterns = [
     path('place_order/<int:rest_id>/<int:cust_id>', views.place_order, name='place_order'),
     path('placed/<int:pk>',views.placed,name='placed'), 
     path('bill_pdf/<int:pk>',views.bill_pdf,name='bill_pdf'),
+    path('search_by_city/<int:pk>',views.search_by_city,name='search_by_city'),
+    path('search_by_name/<int:pk>',views.search_by_name,name='search_by_name'),
 ]
