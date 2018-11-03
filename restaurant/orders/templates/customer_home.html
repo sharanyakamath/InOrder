@@ -21,11 +21,13 @@
           <div class="card-header">{{ restaurant.name }}</div>
           <div class="card-body">
              <!--  <h4 class="card-title"><b>Name:</b> {{ restaurant.name}}</h4> -->
-              <h5 class="card-title"><b>ID:</b> {{ restaurant.rest_id }}</h5>
+              <!-- <h5 class="card-title"><b>ID:</b> {{ restaurant.rest_id }}</h5>
               <h6 class="card-title"><b>City:</b> {{ restaurant.city}}</h6>
               <h7 class="card-title"><b>State:</b> {{ restaurant.state}}</h7>
-              <h8 class="card-title"><b>Country:</b> {{ restaurant.country}}</h8>
-            
+              <h8 class="card-title"><b>Country:</b> {{ restaurant.country}}</h8> -->
+              <div class="card-action">
+          <a href="{% url 'restaurant_home' restaurant.pk %}">Know more</a>
+        </div>
           </div>
            </div>
         </div>

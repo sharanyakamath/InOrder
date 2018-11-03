@@ -139,4 +139,7 @@ def add_item(request,pk):
 		return render(request,'add_item.html',{'restaurant': restaurant})	
 
 
-
+def restaurant_home(request,pk):
+	restaurant = get_object_or_404(Restaurant, pk=pk)
+	items = Item.objects.filter(rest_id=pk)
+	return render(request, 'restaurant_home.html', {'restaurant': restaurant, 'items':items})	
