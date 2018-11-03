@@ -71,6 +71,10 @@ def customer_home(request,pk):
 def home(request):
 	return render(request, 'home.html')
 
+def about(request):
+	return render(request, 'about.html')			
+
+
 def manager_signup(request):
 	if request.method == "POST":
 		man_id = request.POST['man_id']
@@ -90,7 +94,8 @@ def manager_signup(request):
 
 def manager_home(request,pk):
 	manager = get_object_or_404(Manager, pk=pk)
-	return render(request, 'manager_home.html', {'manager': manager})
+	restaurants = Restaurant.objects.filter(man_id=pk)
+	return render(request, 'manager_home.html', {'manager': manager, 'restaurants':restaurants})
 
 def register_restaurant(request,pk):
 	if request.method == "POST":
@@ -105,7 +110,7 @@ def register_restaurant(request,pk):
 		restaurant.save()
 		return redirect('reg_restaurant_home' , pk=restaurant.pk)
 	else:
-		return render(request, 'register_restaurant.html' , {'man_id' : request.user.manager.man_id} )
+		return render(request, 'register_restaurant.html' , {'man_id' : request.user.manager.man_id })
 
 def reg_restaurant_home(request,pk):
 	restaurant = get_object_or_404(Restaurant, pk=pk)

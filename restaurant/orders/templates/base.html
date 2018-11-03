@@ -16,20 +16,20 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarColor01">
+    <!-- {% comment %} --> {% with url_name = request.resolver_match.url_name %} <!-- {% endcomment %} -->
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      <li class="nav-item {% if url_name == 'home' %} active {% endif %}">
+
+        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Features</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Pricing</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">About</a>
+      
+      <li class="nav-item active">
+      <li class="nav-item {% if url_name == 'about' %} active {% endif %}">
+        <a class="nav-link" href="{% url 'about' %}">About</a>
       </li>
     </ul>
+   <!--  {% comment %}  -->{% endwith %} <!-- {% endcomment %} -->
   </div>
 </nav>
 <div style="margin-left:20px; margin-top:20px">

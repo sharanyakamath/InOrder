@@ -11,6 +11,33 @@
                   </div>
             </div>
         </div>
+
+        <table class="table table-hover">
+        <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Restaurant Name</th>
+      <th scope="col">City</th>
+      <th scope="col">State</th>
+      <th scope="col">Country</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for restaurant in restaurants %}
+        <tr>
+          <td>{{ restaurant.rest_id }}</td>
+          <td>{{ restaurant.name }}</td>
+          <td>{{ restaurant.city }}</td>
+          <td>{{ restaurant.state }}</td>
+          <td>{{ restaurant.country }}</td>
+          <td>
+          <a href="{% url 'reg_restaurant_home' restaurant.rest_id %}" class="btn btn-outline-danger" role="button">View</a>
+          </td>
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
         <a role=button href="{% url 'register_restaurant' manager.man_id %}" class = "btn btn-outline-success" >Add a Restaurant</a> 
     </div>
 {% endblock %}
