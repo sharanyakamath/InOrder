@@ -9,8 +9,8 @@
     * customer home should have view_my_orders button 
     
     
-    * add quantity, restaurant id  in order class
-4. manager login/signup -> manager home -> add restaurant -> register_restaurant page (restaurant name and menu (add item button)) 
+    * add quantity, restaurant id  in order class done
+4. manager login/signup -> manager home -> add restaurant -> register_restaurant page (restaurant name and menu (add item button)) done
    
    * order should be reflected here
    
