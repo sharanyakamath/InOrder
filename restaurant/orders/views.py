@@ -192,3 +192,15 @@ def search_by_city(request,pk):
 			return redirect('customer_home',pk=pk)       
 	else:
 		return redirect('customer_home',pk=pk)
+
+def search_by_name(request,pk):
+	if request.method == "POST":
+		customer = get_object_or_404(Customer, cust_id=pk)
+		name = request.POST['name']
+		if name:
+			data = Restaurant.objects.filter(name=name)
+			return render(request, 'customer_home.html', {'customer': customer,'restaurants': data})
+		else:
+			return redirect('customer_home',pk=pk)       
+	else:
+		return redirect('customer_home',pk=pk)
