@@ -28,41 +28,41 @@ def customer_signup(request):
 		return render(request, 'customer_signup.html')
 
 def customer_login(request):
-    if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                if user.user_type == 2:
-                    login(request, user)
-                    return redirect('customer_home',pk=user.customer.cust_id) 
-                else:
-                    return render(request, 'customer_login.html', {'error_message': 'Invalid security staff credentials'})
-            else:
-                return render(request, 'customer_login.html', {'error_message': 'Your account has been disabled'})
-        else:
-            return render(request, 'customer_login.html', {'error_message': 'Invalid login'})
-    return render(request, 'customer_login.html')
+	if request.method == "POST":
+		username = request.POST['username']
+		password = request.POST['password']
+		user = authenticate(username=username, password=password)
+		if user is not None:
+			if user.is_active:
+				if user.user_type == 2:
+					login(request, user)
+					return redirect('customer_home',pk=user.customer.cust_id) 
+				else:
+					return render(request, 'customer_login.html', {'error_message': 'Invalid security staff credentials'})
+			else:
+				return render(request, 'customer_login.html', {'error_message': 'Your account has been disabled'})
+		else:
+			return render(request, 'customer_login.html', {'error_message': 'Invalid login'})
+	return render(request, 'customer_login.html')
 
 
 def manager_login(request):
-    if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                if user.user_type == 1:
-                    login(request, user)
-                    return redirect('manager_home', pk= user.manager.man_id) #, pk=user.security.id)
-                else:
-                    return render(request, 'manager_login.html', {'error_message': 'Invalid manager credentials'})
-            else:
-                return render(request, 'manager_login.html', {'error_message': 'Your account has been disabled'})
-        else:
-            return render(request, 'manager_login.html', {'error_message': 'Invalid login'})
-    return render(request, 'manager_login.html')    
+	if request.method == "POST":
+		username = request.POST['username']
+		password = request.POST['password']
+		user = authenticate(username=username, password=password)
+		if user is not None:
+			if user.is_active:
+				if user.user_type == 1:
+					login(request, user)
+					return redirect('manager_home', pk= user.manager.man_id) #, pk=user.security.id)
+				else:
+					return render(request, 'manager_login.html', {'error_message': 'Invalid manager credentials'})
+			else:
+				return render(request, 'manager_login.html', {'error_message': 'Your account has been disabled'})
+		else:
+			return render(request, 'manager_login.html', {'error_message': 'Invalid login'})
+	return render(request, 'manager_login.html')    
 
 
 
@@ -123,6 +123,11 @@ def reg_restaurant_home(request,pk):
 	items = Item.objects.filter(rest_id=pk)
 	return render(request, 'reg_restaurant_home.html', {'restaurant': restaurant, 'items':items})
 
+def view_my_order(request,pk):
+	customer = get_object_or_404(Customer, pk=pk)
+	bills = Bill.objects.filter(cust_id=pk)
+	return render(request, 'view_my_order.html', {'customer': customer, 'bills': bills})	
+
 def add_item(request,pk):
 	if request.method == "POST":
 		restaurant=Restaurant.objects.get(pk=pk)
@@ -146,19 +151,6 @@ def restaurant_home(request,pk):
 	items = Item.objects.filter(rest_id=pk)
 	return render(request, 'restaurant_home.html', {'restaurant': restaurant, 'items':items, 'cust_id':request.user.customer.cust_id})	
 
-# def place_order(request, rest_id):
-# 	if request.method == "POST":
-# 		bill = Bill(bill_id=1, rest_id=rest_id, cust_id=request.user.customer.cust_id, total=0)
-# 		bill.save()
-# 		items = Item.objects.filter(rest_id=rest_id)
-# 		for item in items:
-# 			quantity = request.POST['quantity'+str(item.pk)]
-# 			order = Order(bill_id=1, item_id=item.pk, quantity=quantity)
-# 			order.save()
-
-# 		return redirect('customer_home', pk=request.user.customer.cust_id)
-# 	else:
-# 		return render(request, 'place_order.html')
 		
 def place_order(request, rest_id, cust_id):
 	if request.method == "POST":
@@ -195,6 +187,37 @@ def bill_pdf(request, pk):
 	response.write(output)
 	return response
 
+
 def restaurant_view_orders(request,pk):
 	bills = Bill.objects.filter(rest_id=pk)
 	return render(request,'restaurant_view_orders.html',{'bills':bills})
+
+def search_by_city(request,pk):
+	if request.method == "POST":
+		customer = get_object_or_404(Customer, cust_id=pk)
+		city = request.POST['city']
+		if city:
+			data = Restaurant.objects.filter(city=city)
+			return render(request, 'customer_home.html', {'customer': customer,'restaurants': data})
+		else:
+			return redirect('customer_home',pk=pk)       
+	else:
+		return redirect('customer_home',pk=pk)
+
+def search_by_name(request,pk):
+	if request.method == "POST":
+		customer = get_object_or_404(Customer, cust_id=pk)
+		name = request.POST['name']
+		if name:
+			data = Restaurant.objects.filter(name=name)
+			return render(request, 'customer_home.html', {'customer': customer,'restaurants': data})
+		else:
+			return redirect('customer_home',pk=pk)       
+	else:
+		return redirect('customer_home',pk=pk)
+
+def delete_item(request, pk):
+    item = get_object_or_404(Item, item_id=pk)
+    rest_id = item.rest_id.rest_id
+    item.delete()
+    return redirect('reg_restaurant_home', pk=rest_id)

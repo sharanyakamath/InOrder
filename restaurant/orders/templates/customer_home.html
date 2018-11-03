@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Restaurant Details{% endblock %}
+{% block title %}Customer home{% endblock %}
 {% block body %}
     <h3>Customer</h3>
     <div class="container">
@@ -8,31 +8,48 @@
               <div class="card-header">Customer Details</div>
                   <div class="card-body">
                     <h6 class="card-title"><b>Name:</b> {{ customer.user.first_name }} {{ customer.user.last_name }}</h6>
+                    <a href="{% url 'view_my_order' customer.pk %}" class="btn btn-outline-success" role="button">View My Orders</a>
                   </div>
             </div>
         </div>
      </div>
-     <div class="container">
-        {% for restaurant in restaurants %}
 
-        <li  style="float:left; margin: 5px;">
-        <div class="col s12 m7">
+     <div class="row">
+      <div class="col-sm-3">
+  <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'search_by_name' customer.cust_id %}" role="form">
+    {% csrf_token %}
+      <input class="form-control mr-sm-2" placeholder="Search by Name" name="name" type="text">
+      <button class="btn btn-secondary my-2 my-sm-0" type="submit" style="margin-right:10px;">Search</button>
+    </form>
+  </div>
+      <div class="col-sm-3">
+     <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'search_by_city' customer.cust_id %}" role="form">
+    {% csrf_token %}
+      <input class="form-control mr-sm-2" placeholder="Search by City" name="city" type="text">
+      <button class="btn btn-secondary my-2 my-sm-0" type="submit" style="margin-right:10px;">Search</button>
+    </form>
+  </div>
+</div>
+    <br>
+     <div class="container">
+      <div class="row">
+        
+        {% for restaurant in restaurants %}
+        <div class="col-sm-3">
+        <!-- <li  style="float:left; margin: 5px;"> -->
+        <!-- <div class="col s12 m7"> -->
           <div class="card medium" style="width:250px; height:400px;">
           <div class="card-header">{{ restaurant.name }}</div>
           <div class="card-body">
-             <!--  <h4 class="card-title"><b>Name:</b> {{ restaurant.name}}</h4> -->
-              <!-- <h5 class="card-title"><b>ID:</b> {{ restaurant.rest_id }}</h5>
-              <h6 class="card-title"><b>City:</b> {{ restaurant.city}}</h6>
-              <h7 class="card-title"><b>State:</b> {{ restaurant.state}}</h7>
-              <h8 class="card-title"><b>Country:</b> {{ restaurant.country}}</h8> -->
               <div class="card-action">
           <a href="{% url 'restaurant_home' restaurant.pk %}">Know more</a>
         </div>
           </div>
            </div>
         </div>
-       </li>
+       <!-- </li> -->
       {% endfor %}
+
     </div>
    
 {% endblock %}
