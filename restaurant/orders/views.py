@@ -72,13 +72,7 @@ def home(request):
 	return render(request, 'home.html')
 
 def about(request):
-	return render(request, 'about.html')
-
-def features(request):
-	return render(request, 'features.html')
-
-def pricing(request):
-	return render(request, 'pricing.html')			
+	return render(request, 'about.html')			
 
 
 def manager_signup(request):
