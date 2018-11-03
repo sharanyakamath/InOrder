@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import User, Customer, Manager, Restaurant, Item, Order
+from .models import User, Customer, Manager, Restaurant, Item, Order, Bill
 import datetime
 import pdfkit
 from django.http import HttpResponse, HttpResponseRedirect
@@ -142,4 +142,53 @@ def add_item(request,pk):
 def restaurant_home(request,pk):
 	restaurant = get_object_or_404(Restaurant, pk=pk)
 	items = Item.objects.filter(rest_id=pk)
-	return render(request, 'restaurant_home.html', {'restaurant': restaurant, 'items':items})	
+	return render(request, 'restaurant_home.html', {'restaurant': restaurant, 'items':items, 'cust_id':request.user.customer.cust_id})	
+
+# def place_order(request, rest_id):
+# 	if request.method == "POST":
+# 		bill = Bill(bill_id=1, rest_id=rest_id, cust_id=request.user.customer.cust_id, total=0)
+# 		bill.save()
+# 		items = Item.objects.filter(rest_id=rest_id)
+# 		for item in items:
+# 			quantity = request.POST['quantity'+str(item.pk)]
+# 			order = Order(bill_id=1, item_id=item.pk, quantity=quantity)
+# 			order.save()
+
+# 		return redirect('customer_home', pk=request.user.customer.cust_id)
+# 	else:
+# 		return render(request, 'place_order.html')
+		
+def place_order(request, rest_id, cust_id):
+	if request.method == "POST":
+		customer = get_object_or_404(Customer, cust_id=cust_id)
+		restaurant = get_object_or_404(Restaurant, rest_id=rest_id)
+		bill_id = request.POST['bill_id']
+		bill = Bill(bill_id=bill_id, rest_id=restaurant, cust_id=customer, total=0)
+		bill.save()
+		items = Item.objects.filter(rest_id=rest_id)
+		bill = get_object_or_404(Bill, bill_id=bill_id)
+		total=0
+		for item in items:
+			quantity = request.POST['quantity'+str(item.pk)]
+			order = Order(bill_id=bill, item_id=item, quantity=quantity)
+			total = total + item.cost*int(quantity)
+			order.save()
+		bill.total=total	
+		bill.save()	
+		return redirect('placed',pk=bill_id)
+	else:
+		return render(request, 'place_order.html')
+		
+def placed(request,pk):
+	orders = Order.objects.filter(bill_id=pk)
+	bill = get_object_or_404(Bill, bill_id=pk)
+	return render(request,'placed.html',{'orders':orders,'bill':bill})
+
+def bill_pdf(request, pk):
+	orders = Order.objects.filter(bill_id=pk)
+	bill = get_object_or_404(Bill, bill_id=pk)    
+	html = loader.render_to_string('placed.html', {'orders':orders,'bill':bill})
+	output = pdfkit.from_string(html, output_path=False)
+	response = HttpResponse(content_type="application/pdf")
+	response.write(output)
+	return response

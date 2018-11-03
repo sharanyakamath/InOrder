@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Restaurant Details{% endblock %}
 {% block body %}
-    <h3>{{restaurant.name}}</h3>
+    <h3>{{restaurant.name}} {{cust_id}}</h3>
     <div class="container">
         <div class="row">
             <div class="card border-primary mb-3" style="max-width: 20rem;">
@@ -15,6 +15,8 @@
             </div>
         </div>
 
+    <form role="form" action="{% url 'place_order' restaurant.pk cust_id%}" method="post" enctype="multipart/form-data">
+
         <table class="table table-hover">
         <thead>
     <tr>
@@ -23,9 +25,12 @@
       <th scope="col">Cost</th>
       <th scope="col">Description</th>
       <th scope="col">Image</th>
+      <th scope="col">Quantity</th>
     </tr>
   </thead>
   <tbody>
+    {% csrf_token %}
+
     {% for item in items %}
         <tr>
           <td>{{ item.item_id }}</td>
@@ -33,9 +38,8 @@
           <td>{{ item.cost }}</td>
           <td>{{ item.description }}</td>
           <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">View this dish</button></td>
-          </tr>
-    
-
+          <td><input type="number" min=0 class="form-control" id="quantity{{item.pk}}" name="quantity{{item.pk}}" placeholder="quantity" style="width:50px;" value=0></td>
+        </tr>
 
   <!-- Modal -->
   <div class="modal" id="myModal" role="dialog">
@@ -59,7 +63,11 @@
       </div>
   </div>
         {% endfor %}
+
   </tbody>
 </table>
+<input type="text" class="form-control" id="bill_id" name="bill_id" placeholder="Bill ID" style="width:100px;">
+<button type="submit" class="btn btn-primary">Place Order</button>
+      </form>
     </div>
 {% endblock %}

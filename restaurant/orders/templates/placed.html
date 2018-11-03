@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Bill Details{% endblock %}
+{% block body %}
+    <h3>Bill Details</h3>
+    <div class="container">
+        <div class="row">
+            <div class="card border-secondary mb-3" style="max-width: 20rem;">
+              <div class="card-header">Bill Number : {{bill.bill_id}}</div>
+                  <div class="card-body">
+                  	{% for order in orders %}
+
+                    <h6 class="card-title"><b>{{order.item_id.name}} : </b> {{order.item_id.cost}}*{{order.quantity}} </h6>
+                    {% endfor %}
+                    <h6 class="card-title"><b>Total : Rs.{{bill.total}} </b></h6>
+                  </div>
+            </div>
+
+        </div>
+     </div>
+     <br>
+     <a href="{% url 'bill_pdf' bill.pk %}" class="btn btn-outline-success" role="button">Download Bill</a>
+{% endblock %}
