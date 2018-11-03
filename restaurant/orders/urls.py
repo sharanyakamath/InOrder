@@ -22,4 +22,5 @@ urlpatterns = [
     path('bill_pdf/<int:pk>',views.bill_pdf,name='bill_pdf'),
     path('search_by_city/<int:pk>',views.search_by_city,name='search_by_city'),
     path('search_by_name/<int:pk>',views.search_by_name,name='search_by_name'),
+    path('delete_item/<int:pk>',views.delete_item,name='delete_item'),
 ]

@@ -204,3 +204,9 @@ def search_by_name(request,pk):
 			return redirect('customer_home',pk=pk)       
 	else:
 		return redirect('customer_home',pk=pk)
+
+def delete_item(request, pk):
+    item = get_object_or_404(Item, item_id=pk)
+    rest_id = item.rest_id.rest_id
+    item.delete()
+    return redirect('reg_restaurant_home', pk=rest_id)
