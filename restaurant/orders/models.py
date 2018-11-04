@@ -53,6 +53,6 @@ class Order(models.Model):
 	quantity = models.IntegerField(default=0)
 
 class Feedback(models.Model):
-	feed_back = models.TextField(max_length = 255)
+	feed_back = models.CharField(max_length = 255)
 	cust_id = models.ForeignKey(Customer,on_delete=models.CASCADE, default=123)
 	rest_id = models.ForeignKey(Restaurant,on_delete=models.CASCADE, default=1007)

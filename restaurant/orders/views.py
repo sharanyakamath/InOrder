@@ -178,6 +178,11 @@ def placed(request,pk):
 	bill = get_object_or_404(Bill, bill_id=pk)
 	return render(request,'placed.html',{'orders':orders,'bill':bill})
 
+def placed_man(request,pk):
+	orders = Order.objects.filter(bill_id=pk)
+	bill = get_object_or_404(Bill, bill_id=pk)
+	return render(request,'placed_man.html',{'orders':orders,'bill':bill})	
+
 def bill_pdf(request, pk):
 	orders = Order.objects.filter(bill_id=pk)
 	bill = get_object_or_404(Bill, bill_id=pk)    
@@ -235,3 +240,8 @@ def feedback(request,rest_id,cust_id,bill_id):
 		restaurant = get_object_or_404(Restaurant, rest_id=rest_id)
 		bill = get_object_or_404(Bill, bill_id = bill_id)
 		return render(request,'feedback.html',{'customer':customer,'restaurant':restaurant,'bill':bill})	
+
+
+def feedback_man(request,pk):
+	feedbacks = Feedback.objects.filter(rest_id=pk)
+	return render(request, 'feedback_man.html', {'feedbacks':feedbacks})

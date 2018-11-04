@@ -18,7 +18,7 @@
         <tr>
           <td>{{bill.bill_id}}</td>
           <td>{{bill.total}}</td>
-          <td><a role ="button" class="btn btn-outline-danger" href="{% url 'placed' bill.bill_id %}">View Items</a></td>
+          <td><a role ="button" class="btn btn-outline-danger" href="{% url 'placed_man' bill.bill_id %}">View Items</a></td>
         </tr>
     {% endfor %}
   </tbody>
