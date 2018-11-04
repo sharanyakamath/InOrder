@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import User, Customer, Manager, Restaurant, Item, Order, Bill
+from .models import User, Customer, Manager, Restaurant, Item, Order, Bill, Feedback
 import datetime
 import pdfkit
 from django.http import HttpResponse, HttpResponseRedirect
@@ -221,3 +221,17 @@ def delete_item(request, pk):
     rest_id = item.rest_id.rest_id
     item.delete()
     return redirect('reg_restaurant_home', pk=rest_id)
+
+def feedback(request,rest_id,cust_id,bill_id):
+	if request.method == "POST":
+		customer = get_object_or_404(Customer, cust_id=cust_id)
+		restaurant = get_object_or_404(Restaurant, rest_id=rest_id)
+		feed_back = request.POST['feed_back']
+		feed_back = Feedback(feed_back=feed_back,rest_id=restaurant,cust_id=customer)
+		feed_back.save()
+		return redirect('placed',pk=bill_id)
+	else:
+		customer = get_object_or_404(Customer, cust_id=cust_id)
+		restaurant = get_object_or_404(Restaurant, rest_id=rest_id)
+		bill = get_object_or_404(Bill, bill_id = bill_id)
+		return render(request,'feedback.html',{'customer':customer,'restaurant':restaurant,'bill':bill})	
