@@ -38,7 +38,7 @@ class Item(models.Model):
 	name = models.CharField(max_length = 255)
 	cost = models.IntegerField(default=0)
 	description = models.TextField()
-	image = models.ImageField(upload_to='item')
+	image = models.ImageField(upload_to = 'media/item')
 	rest_id = models.ForeignKey(Restaurant, on_delete=models.CASCADE, default=1007)
 
 class Bill(models.Model):

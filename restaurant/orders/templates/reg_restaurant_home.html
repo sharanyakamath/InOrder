@@ -35,14 +35,14 @@
           <td>{{ item.name }}</td>
           <td>{{ item.cost }}</td>
           <td>{{ item.description }}</td>
-          <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">View this dish</button></td>
+          <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal{{item.pk}}">View this dish</button></td>
           <td><a href="{% url 'delete_item' item.pk %}" role="button" class="btn btn-danger">Delete</a></td>
-          </tr>
+       
     
 
 
   <!-- Modal -->
-  <div class="modal" id="myModal" role="dialog">
+  <div class="modal" id="myModal{{item.pk}}" role="dialog">
       <div class="modal-dialog" role="document">
 
         <div class="modal-content">
@@ -62,6 +62,7 @@
 
       </div>
   </div>
+     </tr>
         {% endfor %}
   </tbody>
 </table>
