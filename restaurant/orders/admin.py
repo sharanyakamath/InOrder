@@ -48,5 +48,6 @@ admin.site.register(Order)
 admin.site.register(Item)
 admin.site.register(Bill)
 admin.site.register(Feedback)
+# admin.site.register(Permission)
 
 

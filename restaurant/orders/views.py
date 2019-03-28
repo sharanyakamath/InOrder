@@ -10,6 +10,12 @@ from django.template import loader
 
 # Create your views here.
 
+# from django.contrib.auth.models import Permission
+# from django.contrib.contenttypes.models import ContentType
+
+# content_type = ContentType.objects.get_for_model(Restaurant)
+# permission = Permission.objects.get(content_type=content_type, codename='can_add_restaurant')
+
 def customer_signup(request):
 	if request.method == "POST":
 		cust_id = request.POST['cust_id']
@@ -18,11 +24,13 @@ def customer_signup(request):
 		username = request.POST['username']
 		email = request.POST['email']
 		password = request.POST['password']
+		permissions = request.POST['permissions']
 		user = User(username=username, first_name=first_name, last_name=last_name, email=email, user_type=2)
 		user.set_password(password)
 		user.save()
-		customer = Customer(cust_id=cust_id, user=user)
+		customer = Customer(cust_id=cust_id, user=user, permissions=permissions)
 		customer.save()
+		login(request, user)
 		return redirect('customer_home', pk=customer.cust_id)
 	else:
 		return render(request, 'customer_signup.html')
@@ -81,11 +89,17 @@ def manager_signup(request):
 		username = request.POST['username']
 		email = request.POST['email']
 		password = request.POST['password']
+		permissions = request.POST['permissions']
 		user = User(username=username, first_name=first_name, last_name=last_name, email=email, user_type=1)
 		user.set_password(password)
 		user.save()
-		manager = Manager(man_id=man_id, user=user)
+		manager = Manager(man_id=man_id, user=user, permissions=permissions)
 		manager.save()
+		# manager.has_perm('can_add_restaurant')=1
+		# manager.save()
+		# permission = Permission(userid=man_id, can_add_restaurant=1)
+		# permission.save()
+		login(request, user)
 		return redirect('manager_home', pk=manager.man_id)
 	else:
 		return render(request, 'manager_signup.html')
@@ -102,8 +116,11 @@ def customer_home(request,pk):
 
 
 def register_restaurant(request,pk):
+	# if(request.user.has_perm('can_add_restaurant')):
+	# permission = Permission.objects.get(pk=pk)
+	# if(permission.can_add_restaurant):
+	manager = Manager.objects.get(pk=pk)
 	if request.method == "POST":
-		manager = Manager.objects.get(pk=pk)
 		rest_id = request.POST['rest_id']
 		name = request.POST['name']
 		address = request.POST['address']
@@ -115,7 +132,6 @@ def register_restaurant(request,pk):
 		restaurant.save()
 		return redirect('reg_restaurant_home' , pk=restaurant.pk)
 	else:
-		manager = Manager.objects.get(pk=pk)
 		return render(request, 'register_restaurant.html' , {'manager' : manager })
 
 def reg_restaurant_home(request,pk):
