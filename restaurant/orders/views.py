@@ -41,14 +41,16 @@ def customer_signup(request):
 
 def customer_login(request):
 	if request.method == "POST":
+		userid = request.POST['userid']
 		username = request.POST['username']
 		password = request.POST['password']
 		user = authenticate(username=username, password=password)
 		if user is not None:
 			if user.is_active:
-				if user.user_type == 2:
+				customer = get_object_or_404(Customer, pk=userid)
+				if customer:
 					login(request, user)
-					return redirect('customer_home',pk=user.customer.cust_id) 
+					return redirect('customer_home',pk=customer.cust_id) 
 				else:
 					return render(request, 'customer_login.html', {'error_message': 'Invalid security staff credentials'})
 			else:
@@ -60,14 +62,16 @@ def customer_login(request):
 
 def manager_login(request):
 	if request.method == "POST":
+		userid = request.POST['userid']
 		username = request.POST['username']
 		password = request.POST['password']
 		user = authenticate(username=username, password=password)
 		if user is not None:
 			if user.is_active:
-				if user.user_type == 1:
+				manager = get_object_or_404(Manager, pk=userid)
+				if manager:
 					login(request, user)
-					return redirect('manager_home', pk= user.manager.man_id) #, pk=user.security.id)
+					return redirect('manager_home', pk= manager.man_id) #, pk=user.security.id)
 				else:
 					return render(request, 'manager_login.html', {'error_message': 'Invalid manager credentials'})
 			else:
@@ -126,7 +130,8 @@ def customer_home(request,pk):
 	return render(request, 'customer_home.html', {'customer': customer, 'restaurants': restaurants})
 
 # @permission_required('orders.can_add_restaurant')
-@permission_required('orders.can_vote')
+# @permission_required('orders.can_vote')
+@permission_required('can_add_restaurant')
 def register_restaurant(request,pk):
 	manager = Manager.objects.get(pk=pk)
 	# if(request.user.has_perm('orders.add_restaurant')):
@@ -153,11 +158,13 @@ def reg_restaurant_home(request,pk):
 	items = Item.objects.filter(rest_id=pk)
 	return render(request, 'reg_restaurant_home.html', {'restaurant': restaurant, 'items':items})
 
+@permission_required('can_view_order')
 def view_my_order(request,pk):
 	customer = get_object_or_404(Customer, pk=pk)
 	bills = Bill.objects.filter(cust_id=pk)
 	return render(request, 'view_my_order.html', {'customer': customer, 'bills': bills})	
 
+# @permission_required('can_add_item')
 def add_item(request,pk):
 	if request.method == "POST":
 		restaurant=Restaurant.objects.get(pk=pk)
@@ -175,7 +182,7 @@ def add_item(request,pk):
 		restaurant=Restaurant.objects.get(pk=pk)
 		return render(request,'add_item.html',{'restaurant': restaurant})	
 
-
+# @permission_required('can_view_restaurant')
 def restaurant_home(request,pk):
 	restaurant = get_object_or_404(Restaurant, pk=pk)
 	items = Item.objects.filter(rest_id=pk)

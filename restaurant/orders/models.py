@@ -21,7 +21,7 @@ from django.contrib.auth.models import User
     # 	return self.can_add_restaurant
 
 class Manager(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     man_id = models.IntegerField(primary_key=True)
     # PERMISSION_CHOICES = (
     #   (1, 'add'),
@@ -44,8 +44,9 @@ class Restaurant(models.Model):
 	# 	permissions = (("can_add_restaurant", "Can add restaurant"),)
 
 class Customer(models.Model):
-	cust_id = models.IntegerField(primary_key=True, default=123)
-	user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    cust_id = models.IntegerField(primary_key=True)
+
 	# PERMISSION_CHOICES = (
  #      (1, 'regular'),
  #      (2, 'premium'),
