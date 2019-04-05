@@ -28,11 +28,11 @@ def customer_signup(request):
 		username = request.POST['username']
 		email = request.POST['email']
 		password = request.POST['password']
-		permissions = request.POST['permissions']
-		user = User(username=username, first_name=first_name, last_name=last_name, email=email, user_type=2)
+		# permissions = request.POST['permissions']
+		user = User(username=username, first_name=first_name, last_name=last_name, email=email)
 		user.set_password(password)
 		user.save()
-		customer = Customer(cust_id=cust_id, user=user, permissions=permissions)
+		customer = Customer(cust_id=cust_id, user=user)
 		customer.save()
 		login(request, user)
 		return redirect('customer_home', pk=customer.cust_id)
@@ -93,17 +93,18 @@ def manager_signup(request):
 		username = request.POST['username']
 		email = request.POST['email']
 		password = request.POST['password']
-		permissions = request.POST['permissions']
-		user = User(username=username, first_name=first_name, last_name=last_name, email=email, user_type=1)
+		# permissions = request.POST['permissions']
+		user = User(username=username, first_name=first_name, last_name=last_name, email=email)
 		user.set_password(password)
 		user.save()
 
-		content_type = ContentType.objects.get_for_model(Restaurant)
-		permission = Permission.objects.get(codename='add_restaurant', content_type=content_type,)
-		user.user_permissions.add(permission)
-		user.save()
+		# content_type = ContentType.objects.get_for_model(Restaurant)
+		# permission = Permission.objects.get(codename='add_restaurant', content_type=content_type,)
+		# user.user_permissions.add(permission)
+		# user.save()
 
-		manager = Manager(man_id=man_id, user=user, permissions=permissions)
+		# manager = Manager(man_id=man_id, user=user, permissions=permissions)
+		manager = Manager(man_id=man_id, user=user)
 		manager.save()
 		# manager.has_perm('can_add_restaurant')=1
 		# manager.save()
@@ -125,26 +126,27 @@ def customer_home(request,pk):
 	return render(request, 'customer_home.html', {'customer': customer, 'restaurants': restaurants})
 
 # @permission_required('orders.can_add_restaurant')
+@permission_required('orders.can_vote')
 def register_restaurant(request,pk):
 	manager = Manager.objects.get(pk=pk)
-	if(request.user.has_perm('orders.add_restaurant')):
+	# if(request.user.has_perm('orders.add_restaurant')):
 	# permission = Permission.objects.get(pk=pk)
 	# if(permission.can_add_restaurant):
-		if request.method == "POST":
-			rest_id = request.POST['rest_id']
-			name = request.POST['name']
-			address = request.POST['address']
-			city = request.POST['city']
-			state = request.POST['state']
-			country = request.POST['country']
-			image = request.FILES['image']
-			restaurant = Restaurant(rest_id=rest_id,name=name,address=address,city=city,state=state,country=country,image=image,man_id=manager)		
-			restaurant.save()
-			return redirect('reg_restaurant_home' , pk=restaurant.pk)
-		else:
-			return render(request, 'register_restaurant.html' , {'manager' : manager })
+	if request.method == "POST":
+		rest_id = request.POST['rest_id']
+		name = request.POST['name']
+		address = request.POST['address']
+		city = request.POST['city']
+		state = request.POST['state']
+		country = request.POST['country']
+		image = request.FILES['image']
+		restaurant = Restaurant(rest_id=rest_id,name=name,address=address,city=city,state=state,country=country,image=image,man_id=manager)		
+		restaurant.save()
+		return redirect('reg_restaurant_home' , pk=restaurant.pk)
 	else:
-		return redirect('manager_home', pk=manager.man_id)
+		return render(request, 'register_restaurant.html' , {'manager' : manager })
+	# else:
+	# 	return redirect('manager_home', pk=manager.man_id)
 
 def reg_restaurant_home(request,pk):
 	restaurant = get_object_or_404(Restaurant, pk=pk)

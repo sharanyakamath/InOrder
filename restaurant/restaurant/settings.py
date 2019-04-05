@@ -26,7 +26,7 @@ SECRET_KEY = 'vxwjkyex)_ekp(95bphqczy-r(!r1hf(r((bmkt4q$93^vgzt)'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-AUTH_USER_MODEL = 'orders.User'
+# AUTH_USER_MODEL = 'orders.User'
 
 # Application definition
 

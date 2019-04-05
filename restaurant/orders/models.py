@@ -1,17 +1,17 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
-import datetime
+# from django.contrib.auth.models import AbstractUser
 import django.utils.timezone
+from django.contrib.auth.models import User
+
 # Create your models here.
+# class User(User):
+    # USER_TYPE_CHOICES = (
+    #   (1, 'manager'),
+    #   (2, 'customer'),
+    #   (3, 'admin'),
+    # )
 
-class User(AbstractUser):
-    USER_TYPE_CHOICES = (
-      (1, 'manager'),
-      (2, 'customer'),
-      (3, 'admin'),
-    )
-
-    user_type = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES, default=3)
+    # user_type = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES, default=3)
 
     # class Meta:
     # 	permissions = (
@@ -21,14 +21,14 @@ class User(AbstractUser):
     # 	return self.can_add_restaurant
 
 class Manager(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
-    man_id = models.IntegerField(primary_key=True,default=1)
-    PERMISSION_CHOICES = (
-      (1, 'add'),
-      (2, 'add_edit'),
-      (3, 'add_edit_delete'),
-    )
-    permissions = models.PositiveSmallIntegerField(choices=PERMISSION_CHOICES, default=1)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    man_id = models.IntegerField(primary_key=True)
+    # PERMISSION_CHOICES = (
+    #   (1, 'add'),
+    #   (2, 'add_edit'),
+    #   (3, 'add_edit_delete'),
+    # )
+    # permissions = models.PositiveSmallIntegerField(choices=PERMISSION_CHOICES, default=1)
     
 
 class Restaurant(models.Model):
@@ -45,13 +45,13 @@ class Restaurant(models.Model):
 
 class Customer(models.Model):
 	cust_id = models.IntegerField(primary_key=True, default=123)
-	user = models.OneToOneField(User, on_delete=models.CASCADE, default=2)
-	PERMISSION_CHOICES = (
-      (1, 'regular'),
-      (2, 'premium'),
-      (3, 'gold'),
-    )
-	permissions = models.PositiveSmallIntegerField(choices=PERMISSION_CHOICES, default=1)
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	# PERMISSION_CHOICES = (
+ #      (1, 'regular'),
+ #      (2, 'premium'),
+ #      (3, 'gold'),
+ #    )
+	# permissions = models.PositiveSmallIntegerField(choices=PERMISSION_CHOICES, default=1)
     
 class Item(models.Model):
 	item_id = models.IntegerField(primary_key=True, default=1)
