@@ -10,6 +10,7 @@ urlpatterns = [
     path('customer_signup', views.customer_signup, name='customer_signup'),
     path('customer_login', views.customer_login, name='customer_login'),
     path('customer_home/<int:pk>', views.customer_home, name='customer_home'),
+    path('customer_home_ads/<int:pk>', views.customer_home_ads, name='customer_home_ads'),
     path('manager_signup', views.manager_signup, name='manager_signup'),
     path('manager_home/<int:pk>', views.manager_home, name='manager_home'),
     path('manager_login', views.manager_login, name='manager_login'),
@@ -29,4 +30,6 @@ urlpatterns = [
     path('delete_item/<int:pk>',views.delete_item,name='delete_item'),
     path('feedback/<int:rest_id>/<int:cust_id>/<int:bill_id>',views.feedback,name='feedback'),
     path('feedback_man/<int:pk>',views.feedback_man,name='feedback_man'),
+    path('close_ad/<int:pk>',views.close_ad,name='close_ad'),
+
 ]
