@@ -357,7 +357,7 @@ def upgrade_to_premium(request, pk):
             customer = get_object_or_404(Customer, pk=pk)
             restaurants = Restaurant.objects.all()
             return render(request, 'customer_home_ads.html', {'customer': customer, 'restaurants': restaurants,
-                                                              'error_message': 'You already a premium customer'})
+                                                              'error_message': 'You\'re already a premium customer'})
         else:
             group = Group.objects.get(name='Premium Customer')
             request.user.groups.add(group)
@@ -367,15 +367,13 @@ def upgrade_to_premium(request, pk):
         restaurants = Restaurant.objects.all()
         return render(request, 'customer_home_ads.html', {'customer': customer, 'restaurants': restaurants,
                                                           'error_message': 'Not enough orders to upgrade'})
-        # return redirect('customer_home_ads', pk=pk)
 
 
-# @permission_required('orders.view_offer', raise_exception=True)
+@permission_required('orders.view_offer', raise_exception=True)
 def get_offer(request, pk):
     return redirect("https://www.coupondunia.in/")
 
 
-# @permission_required('orders.delete_ad', raise_exception=True)
 def upgrade_to_gold(request, pk):
     no_of_bills = Bill.objects.filter(cust_id=pk).count()
     if no_of_bills >= 10:
@@ -383,7 +381,7 @@ def upgrade_to_gold(request, pk):
             customer = get_object_or_404(Customer, pk=pk)
             restaurants = Restaurant.objects.all()
             return render(request, 'customer_home_ads.html', {'customer': customer, 'restaurants': restaurants,
-                                                              'error_message': 'You are already a gold customer'})
+                                                              'error_message': 'You\'re already a gold customer'})
         else:
             group = Group.objects.get(name='Gold Customer')
             request.user.groups.add(group)
@@ -393,4 +391,3 @@ def upgrade_to_gold(request, pk):
         restaurants = Restaurant.objects.all()
         return render(request, 'customer_home_ads.html', {'customer': customer, 'restaurants': restaurants,
                                                           'error_message_gold': 'Not enough orders to upgrade'})
-        # return redirect('customer_home_ads', pk=pk)

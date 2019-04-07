@@ -70,18 +70,14 @@
 
     </div>
    </div>
-
-{#    <div class="alert alert-dismissible alert-warning">#}
-{#      <h4 class="alert-heading">Offers</h4>#}
-{#      <p class="mb-0">Get Discounts<a href="https://in.bookmyshow.com/mangaluru-mangalore" class="alert-link">BookMyShow</a>.</p>#}
-{#    </div>#}
+<br><br>
 
     <div>
     <a href="{% url 'get_offer' customer.pk %}" class="btn btn-danger" role="button">Get Discounts</a>
 
      <a href="{% url 'upgrade_to_gold' customer.pk %}" class="btn btn-danger" role="button">Upgrade to Gold User</a>
 
-     {% if error_message %}
+     {% if error_message_gold %}
       <p><strong>{{ error_message_gold }}</strong></p>
     {% endif %}
    </div>
