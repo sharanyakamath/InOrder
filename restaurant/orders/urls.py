@@ -14,12 +14,17 @@ urlpatterns = [
     path('manager_signup', views.manager_signup, name='manager_signup'),
     path('manager_home/<int:pk>', views.manager_home, name='manager_home'),
     path('manager_login', views.manager_login, name='manager_login'),
+
+    path('owner_signup', views.owner_signup, name='owner_signup'),
+    path('owner_home/<int:pk>', views.owner_home, name='owner_home'),
+    path('owner_login', views.owner_login, name='owner_login'),
+
     path('about/', views.about, name='about'),
     path('register_restaurant/<int:pk>', views.register_restaurant, name='register_restaurant'),
     path('reg_restaurant_home/<int:pk>', views.reg_restaurant_home, name='reg_restaurant_home'),
     path('view_my_order/<int:pk>', views.view_my_order, name='view_my_order'),
     path('add_item/<int:pk>', views.add_item, name='add_item'),  
-    path('restaurant_home/<int:pk>',views.restaurant_home,name='restaurant_home'), 
+    path('restaurant_home/<int:pk>',views.restaurant_home, name='restaurant_home'),
     path('place_order/<int:rest_id>/<int:cust_id>', views.place_order, name='place_order'),
     path('placed/<int:pk>',views.placed,name='placed'), 
     path('placed_man/<int:pk>',views.placed_man,name='placed_man'), 

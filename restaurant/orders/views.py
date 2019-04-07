@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import User, Customer, Manager, Restaurant, Item, Order, Bill, Feedback
+from .models import User, Customer, Manager, Restaurant, Item, Order, Bill, Feedback, Owner
 import datetime
 import pdfkit
 from django.http import HttpResponse, HttpResponseRedirect
@@ -73,6 +73,55 @@ def manager_login(request):
     return render(request, 'manager_login.html')
 
 
+def owner_login(request):
+    if request.method == "POST":
+        user_id = request.POST['userid']
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                owner = get_object_or_404(Owner, pk=user_id)
+                if owner:
+                    login(request, user)
+                    return redirect('owner_home', pk=owner.owner_id)  # pk=user.security.id)
+                else:
+                    return render(request, 'owner_login.html', {'error_message': 'Invalid owner credentials'})
+            else:
+                return render(request, 'owner_login.html', {'error_message': 'Your account has been disabled'})
+        else:
+            return render(request, 'owner_login.html', {'error_message': 'Invalid login'})
+    return render(request, 'owner_login.html')
+
+
+def owner_signup(request):
+    if request.method == "POST":
+        owner_id = request.POST['owner_id']
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        # permissions = request.POST['permissions']
+        user = User(username=username, first_name=first_name, last_name=last_name, email=email)
+        user.set_password(password)
+        user.save()
+        group = Group.objects.get(name='Owner')
+        user.groups.add(group)
+        owner = Owner(owner_id=owner_id, user=user)
+        owner.save()
+        login(request, user)
+        return redirect('owner_home', pk=owner.owner_id)
+    else:
+        return render(request, 'owner_signup.html')
+
+
+def owner_home(request, pk):
+    owner = get_object_or_404(Owner, pk=pk)
+    restaurants = Restaurant.objects.filter(man_id=pk)
+    return render(request, 'owner_home.html', {'owner': owner, 'restaurants': restaurants})
+
+
 def home(request):
     return render(request, 'home.html')
 
@@ -83,7 +132,8 @@ def about(request):
 
 def manager_signup(request):
     if request.method == "POST":
-        man_id = request.POST['man_id']
+        # man_id = request.POST['man_id']
+        man_id = request.user.owner.owner_id
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
         username = request.POST['username']
@@ -152,6 +202,7 @@ def view_my_order(request,pk):
     return render(request, 'view_my_order.html', {'customer': customer, 'bills': bills})
 
 
+@permission_required('orders.add_item', raise_exception=True)
 def add_item(request,pk):
     if request.method == "POST":
         restaurant=Restaurant.objects.get(pk=pk)
@@ -251,6 +302,7 @@ def search_by_name(request, pk):
         return redirect('customer_home',pk=pk)
 
 
+@permission_required('orders.delete_item',raise_exception=True)
 def delete_item(request, pk):
     item = get_object_or_404(Item, item_id=pk)
     rest_id = item.rest_id.rest_id

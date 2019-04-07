@@ -15,8 +15,8 @@ class Restaurant(models.Model):
     city = models.CharField(max_length=255)
     state = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
-    man_id = models.ForeignKey(Manager, on_delete = models.CASCADE, default=1)
-    image = models.ImageField(upload_to='restaurant',default=None)
+    man_id = models.ForeignKey(Manager, on_delete=models.CASCADE, default=1)
+    image = models.ImageField(upload_to='restaurant', default=None)
 
 
 class Customer(models.Model):
@@ -26,10 +26,10 @@ class Customer(models.Model):
 
 class Item(models.Model):
     item_id = models.IntegerField(primary_key=True, default=1)
-    name = models.CharField(max_length = 255)
+    name = models.CharField(max_length=255)
     cost = models.IntegerField(default=0)
     description = models.TextField()
-    image = models.ImageField(upload_to = 'media/item')
+    image = models.ImageField(upload_to='media/item')
     rest_id = models.ForeignKey(Restaurant, on_delete=models.CASCADE, default=1007)
 
 
@@ -47,10 +47,15 @@ class Order(models.Model):
 
 
 class Feedback(models.Model):
-    feed_back = models.CharField(max_length = 255)
-    cust_id = models.ForeignKey(Customer,on_delete=models.CASCADE, default=123)
-    rest_id = models.ForeignKey(Restaurant,on_delete=models.CASCADE, default=1007)
+    feed_back = models.CharField(max_length=255)
+    cust_id = models.ForeignKey(Customer, on_delete=models.CASCADE, default=123)
+    rest_id = models.ForeignKey(Restaurant, on_delete=models.CASCADE, default=1007)
 
 
 class Ad(models.Model):
     ad_id = models.IntegerField(primary_key=True, default=1)
+
+
+class Owner(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    owner_id = models.IntegerField(primary_key=True)

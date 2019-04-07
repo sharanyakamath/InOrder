@@ -23,9 +23,16 @@
 
 
 <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+	  <div class="card-header">Restaurant Owner</div>
+	  <div class="card-body">
+	    <h4 class="card-title"><a class = "btn btn-outline-success" role = "button" href = "{% url 'owner_signup' %}">Signup</a></h4>
+	    <h4 class="card-title"><a class = "btn btn-outline-success" role = "button" href = "{% url 'owner_login' %}">Login</a></h4>
+      </div>
+</div>
+
+<div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
 	  <div class="card-header">Manager</div>
 	  <div class="card-body">
-	    <h4 class="card-title"><a class = "btn btn-outline-success" role = "button" href = "{% url 'manager_signup' %}">Signup</a></h4>
 	    <h4 class="card-title"><a class = "btn btn-outline-success" role = "button" href = "{% url 'manager_login' %}">Login</a></h4>
       </div>
 </div>
