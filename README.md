@@ -3,7 +3,6 @@
 
 - `sudo apt-get update`
 - `sudo apt-get install python-pip python-dev mysql-server libmysqlclient-dev`
-- `pip install PyMySQL`
 - `sudo apt-get install wkhtmltopdf`
 - `sudo mysql_secure_installation`
 - `mysql -u root -p`
@@ -26,10 +25,8 @@
 
 ### Running the project
 
-- `cd ~/Restaurant-Ordering/orders`
+- `cd ~/restaurant`
 - `python manage.py makemigrations`
 - `python manage.py sqlmigrate orders 0001`
 - `python manage.py migrate`
 - `python manage.py runserver`
-
-
