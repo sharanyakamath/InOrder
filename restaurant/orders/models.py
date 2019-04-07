@@ -59,3 +59,7 @@ class Ad(models.Model):
 class Owner(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     owner_id = models.IntegerField(primary_key=True)
+
+
+class Offer(models.Model):
+    offer_id = models.IntegerField(primary_key=True, default=1)

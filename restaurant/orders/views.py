@@ -23,6 +23,8 @@ def customer_signup(request):
         user = User(username=username, first_name=first_name, last_name=last_name, email=email)
         user.set_password(password)
         user.save()
+        group = Group.objects.get(name='Customer')
+        user.groups.add(group)
         customer = Customer(cust_id=cust_id, user=user)
         customer.save()
         login(request, user)
@@ -44,7 +46,8 @@ def customer_login(request):
                     login(request, user)
                     return redirect('customer_home_ads', pk=customer.cust_id)
                 else:
-                    return render(request, 'customer_login.html', {'error_message': 'Invalid security staff credentials'})
+                    return render(request, 'customer_login.html',
+                                  {'error_message': 'Invalid security staff credentials'})
             else:
                 return render(request, 'customer_login.html', {'error_message': 'Your account has been disabled'})
         else:
@@ -63,7 +66,7 @@ def manager_login(request):
                 manager = get_object_or_404(Manager, pk=userid)
                 if manager:
                     login(request, user)
-                    return redirect('manager_home', pk= manager.man_id) #, pk=user.security.id)
+                    return redirect('manager_home', pk=manager.man_id)  # , pk=user.security.id)
                 else:
                     return render(request, 'manager_login.html', {'error_message': 'Invalid manager credentials'})
             else:
@@ -156,23 +159,23 @@ def manager_signup(request):
 def manager_home(request, pk):
     manager = get_object_or_404(Manager, pk=pk)
     restaurants = Restaurant.objects.filter(man_id=pk)
-    return render(request, 'manager_home.html', {'manager': manager, 'restaurants':restaurants})
+    return render(request, 'manager_home.html', {'manager': manager, 'restaurants': restaurants})
 
 
-def customer_home_ads(request,pk):
+def customer_home_ads(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
     restaurants = Restaurant.objects.all()
     return render(request, 'customer_home_ads.html', {'customer': customer, 'restaurants': restaurants})
 
 
-def customer_home(request,pk):
+def customer_home(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
     restaurants = Restaurant.objects.all()
     return render(request, 'customer_home.html', {'customer': customer, 'restaurants': restaurants})
 
 
 @permission_required('orders.add_restaurant', raise_exception=True)
-def register_restaurant(request,pk):
+def register_restaurant(request, pk):
     manager = Manager.objects.get(pk=pk)
     if request.method == "POST":
         rest_id = request.POST['rest_id']
@@ -182,49 +185,51 @@ def register_restaurant(request,pk):
         state = request.POST['state']
         country = request.POST['country']
         image = request.FILES['image']
-        restaurant = Restaurant(rest_id=rest_id,name=name,address=address,city=city,state=state,country=country,image=image,man_id=manager)
+        restaurant = Restaurant(rest_id=rest_id, name=name, address=address, city=city, state=state, country=country,
+                                image=image, man_id=manager)
         restaurant.save()
-        return redirect('reg_restaurant_home' , pk=restaurant.pk)
+        return redirect('reg_restaurant_home', pk=restaurant.pk)
     else:
-        return render(request, 'register_restaurant.html' , {'manager' : manager })
+        return render(request, 'register_restaurant.html', {'manager': manager})
 
 
-def reg_restaurant_home(request,pk):
+def reg_restaurant_home(request, pk):
     restaurant = get_object_or_404(Restaurant, pk=pk)
     items = Item.objects.filter(rest_id=pk)
-    return render(request, 'reg_restaurant_home.html', {'restaurant': restaurant, 'items':items})
+    return render(request, 'reg_restaurant_home.html', {'restaurant': restaurant, 'items': items})
 
 
 @permission_required('orders.view_order', raise_exception=True)
-def view_my_order(request,pk):
+def view_my_order(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
     bills = Bill.objects.filter(cust_id=pk)
     return render(request, 'view_my_order.html', {'customer': customer, 'bills': bills})
 
 
 @permission_required('orders.add_item', raise_exception=True)
-def add_item(request,pk):
+def add_item(request, pk):
     if request.method == "POST":
-        restaurant=Restaurant.objects.get(pk=pk)
+        restaurant = Restaurant.objects.get(pk=pk)
         item_id = request.POST['item_id']
         name = request.POST['name']
         cost = request.POST['cost']
         description = request.POST['description']
         image = request.FILES['image']
-        #print(image)
-        #print(description)
-        item = Item(item_id=item_id,name=name,cost=cost,image=image,description=description,rest_id=restaurant)
+        # print(image)
+        # print(description)
+        item = Item(item_id=item_id, name=name, cost=cost, image=image, description=description, rest_id=restaurant)
         item.save()
         return HttpResponseRedirect('/orders/add_item/' + str(pk))
     else:
-        restaurant=Restaurant.objects.get(pk=pk)
-        return render(request,'add_item.html',{'restaurant': restaurant})
+        restaurant = Restaurant.objects.get(pk=pk)
+        return render(request, 'add_item.html', {'restaurant': restaurant})
 
 
-def restaurant_home(request,pk):
+def restaurant_home(request, pk):
     restaurant = get_object_or_404(Restaurant, pk=pk)
     items = Item.objects.filter(rest_id=pk)
-    return render(request, 'restaurant_home.html', {'restaurant': restaurant, 'items':items, 'cust_id':request.user.customer.cust_id})
+    return render(request, 'restaurant_home.html',
+                  {'restaurant': restaurant, 'items': items, 'cust_id': request.user.customer.cust_id})
 
 
 def place_order(request, rest_id, cust_id):
@@ -236,35 +241,35 @@ def place_order(request, rest_id, cust_id):
         bill.save()
         items = Item.objects.filter(rest_id=rest_id)
         bill = get_object_or_404(Bill, bill_id=bill_id)
-        total=0
+        total = 0
         for item in items:
-            quantity = request.POST['quantity'+str(item.pk)]
+            quantity = request.POST['quantity' + str(item.pk)]
             order = Order(bill_id=bill, item_id=item, quantity=quantity)
-            total = total + item.cost*int(quantity)
+            total = total + item.cost * int(quantity)
             order.save()
-        bill.total=total
+        bill.total = total
         bill.save()
-        return redirect('placed',pk=bill_id)
+        return redirect('placed', pk=bill_id)
     else:
         return render(request, 'place_order.html')
 
 
-def placed(request,pk):
+def placed(request, pk):
     orders = Order.objects.filter(bill_id=pk)
     bill = get_object_or_404(Bill, bill_id=pk)
-    return render(request,'placed.html',{'orders':orders,'bill':bill})
+    return render(request, 'placed.html', {'orders': orders, 'bill': bill})
 
 
-def placed_man(request,pk):
+def placed_man(request, pk):
     orders = Order.objects.filter(bill_id=pk)
     bill = get_object_or_404(Bill, bill_id=pk)
-    return render(request,'placed_man.html',{'orders':orders,'bill':bill})
+    return render(request, 'placed_man.html', {'orders': orders, 'bill': bill})
 
 
 def bill_pdf(request, pk):
     orders = Order.objects.filter(bill_id=pk)
     bill = get_object_or_404(Bill, bill_id=pk)
-    html = loader.render_to_string('placed.html', {'orders':orders,'bill':bill})
+    html = loader.render_to_string('placed.html', {'orders': orders, 'bill': bill})
     output = pdfkit.from_string(html, output_path=False)
     response = HttpResponse(content_type="application/pdf")
     response.write(output)
@@ -273,7 +278,7 @@ def bill_pdf(request, pk):
 
 def restaurant_view_orders(request, pk):
     bills = Bill.objects.filter(rest_id=pk)
-    return render(request,'restaurant_view_orders.html',{'bills':bills})
+    return render(request, 'restaurant_view_orders.html', {'bills': bills})
 
 
 def search_by_city(request, pk):
@@ -282,11 +287,11 @@ def search_by_city(request, pk):
         city = request.POST['city']
         if city:
             data = Restaurant.objects.filter(city=city)
-            return render(request, 'customer_home.html', {'customer': customer,'restaurants': data})
+            return render(request, 'customer_home.html', {'customer': customer, 'restaurants': data})
         else:
-            return redirect('customer_home',pk=pk)
+            return redirect('customer_home', pk=pk)
     else:
-        return redirect('customer_home',pk=pk)
+        return redirect('customer_home', pk=pk)
 
 
 def search_by_name(request, pk):
@@ -295,14 +300,14 @@ def search_by_name(request, pk):
         name = request.POST['name']
         if name:
             data = Restaurant.objects.filter(name=name)
-            return render(request, 'customer_home.html', {'customer': customer,'restaurants': data})
+            return render(request, 'customer_home.html', {'customer': customer, 'restaurants': data})
         else:
-            return redirect('customer_home',pk=pk)
+            return redirect('customer_home', pk=pk)
     else:
-        return redirect('customer_home',pk=pk)
+        return redirect('customer_home', pk=pk)
 
 
-@permission_required('orders.delete_item',raise_exception=True)
+@permission_required('orders.delete_item', raise_exception=True)
 def delete_item(request, pk):
     item = get_object_or_404(Item, item_id=pk)
     rest_id = item.rest_id.rest_id
@@ -310,7 +315,7 @@ def delete_item(request, pk):
     return redirect('reg_restaurant_home', pk=rest_id)
 
 
-@permission_required('orders.delete_restaurant',raise_exception=True)
+@permission_required('orders.delete_restaurant', raise_exception=True)
 def delete_restaurant(request, pk):
     restaurant = get_object_or_404(Restaurant, rest_id=pk)
     restaurant.delete()
@@ -323,36 +328,69 @@ def feedback(request, rest_id, cust_id, bill_id):
         customer = get_object_or_404(Customer, cust_id=cust_id)
         restaurant = get_object_or_404(Restaurant, rest_id=rest_id)
         feed_back = request.POST['feed_back']
-        feed_back = Feedback(feed_back=feed_back,rest_id=restaurant,cust_id=customer)
+        feed_back = Feedback(feed_back=feed_back, rest_id=restaurant, cust_id=customer)
         feed_back.save()
-        return redirect('placed',pk=bill_id)
+        return redirect('placed', pk=bill_id)
     else:
         customer = get_object_or_404(Customer, cust_id=cust_id)
         restaurant = get_object_or_404(Restaurant, rest_id=rest_id)
         bill = get_object_or_404(Bill, bill_id=bill_id)
-        return render(request,'feedback.html',{'customer':customer,'restaurant':restaurant,'bill':bill})
+        return render(request, 'feedback.html', {'customer': customer, 'restaurant': restaurant, 'bill': bill})
 
 
 @permission_required('orders.view_feedback', raise_exception=True)
 def feedback_man(request, pk):
     feedbacks = Feedback.objects.filter(rest_id=pk)
-    return render(request, 'feedback_man.html', {'feedbacks':feedbacks})
+    return render(request, 'feedback_man.html', {'feedbacks': feedbacks})
 
 
 @permission_required('orders.delete_ad', raise_exception=True)
 def close_ad(request, pk):
     return redirect('customer_home', pk=pk)
 
+
 # @permission_required('orders.delete_ad', raise_exception=True)
 def upgrade_to_premium(request, pk):
     no_of_bills = Bill.objects.filter(cust_id=pk).count()
-    if no_of_bills >= 3 :
-        group = Group.objects.get(name='Premium Customer')
-        request.user.groups.add(group)
-        return redirect('customer_home_ads', pk=pk)
+    if no_of_bills >= 3:
+        if request.user.groups.filter(name='Premium Customer').exists():
+            customer = get_object_or_404(Customer, pk=pk)
+            restaurants = Restaurant.objects.all()
+            return render(request, 'customer_home_ads.html', {'customer': customer, 'restaurants': restaurants,
+                                                              'error_message': 'You already a premium customer'})
+        else:
+            group = Group.objects.get(name='Premium Customer')
+            request.user.groups.add(group)
+            return redirect('customer_home_ads', pk=pk)
     else:
         customer = get_object_or_404(Customer, pk=pk)
         restaurants = Restaurant.objects.all()
-        return render(request, 'customer_home_ads.html', {'customer': customer, 'restaurants': restaurants, 'error_message': 'Not enough orders to upgrade'})
+        return render(request, 'customer_home_ads.html', {'customer': customer, 'restaurants': restaurants,
+                                                          'error_message': 'Not enough orders to upgrade'})
         # return redirect('customer_home_ads', pk=pk)
 
+
+# @permission_required('orders.view_offer', raise_exception=True)
+def get_offer(request, pk):
+    return redirect("https://www.coupondunia.in/")
+
+
+# @permission_required('orders.delete_ad', raise_exception=True)
+def upgrade_to_gold(request, pk):
+    no_of_bills = Bill.objects.filter(cust_id=pk).count()
+    if no_of_bills >= 10:
+        if request.user.groups.filter(name='Gold Customer').exists():
+            customer = get_object_or_404(Customer, pk=pk)
+            restaurants = Restaurant.objects.all()
+            return render(request, 'customer_home_ads.html', {'customer': customer, 'restaurants': restaurants,
+                                                              'error_message': 'You are already a gold customer'})
+        else:
+            group = Group.objects.get(name='Gold Customer')
+            request.user.groups.add(group)
+            return redirect('customer_home_ads', pk=pk)
+    else:
+        customer = get_object_or_404(Customer, pk=pk)
+        restaurants = Restaurant.objects.all()
+        return render(request, 'customer_home_ads.html', {'customer': customer, 'restaurants': restaurants,
+                                                          'error_message_gold': 'Not enough orders to upgrade'})
+        # return redirect('customer_home_ads', pk=pk)
