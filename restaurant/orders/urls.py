@@ -20,6 +20,7 @@ urlpatterns = [
     path('owner_login', views.owner_login, name='owner_login'),
 
     path('about/', views.about, name='about'),
+    path('delete_restaurant/<int:pk>', views.delete_restaurant, name='delete_restaurant'),
     path('register_restaurant/<int:pk>', views.register_restaurant, name='register_restaurant'),
     path('reg_restaurant_home/<int:pk>', views.reg_restaurant_home, name='reg_restaurant_home'),
     path('view_my_order/<int:pk>', views.view_my_order, name='view_my_order'),

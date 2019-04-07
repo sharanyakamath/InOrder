@@ -26,7 +26,7 @@ def customer_signup(request):
         customer = Customer(cust_id=cust_id, user=user)
         customer.save()
         login(request, user)
-        return redirect('customer_home', pk=customer.cust_id)
+        return redirect('customer_home_ads', pk=customer.cust_id)
     else:
         return render(request, 'customer_signup.html')
 
@@ -42,7 +42,7 @@ def customer_login(request):
                 customer = get_object_or_404(Customer, pk=userid)
                 if customer:
                     login(request, user)
-                    return redirect('customer_home_ads',pk=customer.cust_id)
+                    return redirect('customer_home_ads', pk=customer.cust_id)
                 else:
                     return render(request, 'customer_login.html', {'error_message': 'Invalid security staff credentials'})
             else:
@@ -171,7 +171,7 @@ def customer_home(request,pk):
     return render(request, 'customer_home.html', {'customer': customer, 'restaurants': restaurants})
 
 
-@permission_required('orders.add_restaurant')
+@permission_required('orders.add_restaurant', raise_exception=True)
 def register_restaurant(request,pk):
     manager = Manager.objects.get(pk=pk)
     if request.method == "POST":
@@ -195,7 +195,7 @@ def reg_restaurant_home(request,pk):
     return render(request, 'reg_restaurant_home.html', {'restaurant': restaurant, 'items':items})
 
 
-@permission_required('orders.view_order')
+@permission_required('orders.view_order', raise_exception=True)
 def view_my_order(request,pk):
     customer = get_object_or_404(Customer, pk=pk)
     bills = Bill.objects.filter(cust_id=pk)
@@ -310,6 +310,14 @@ def delete_item(request, pk):
     return redirect('reg_restaurant_home', pk=rest_id)
 
 
+@permission_required('orders.delete_restaurant',raise_exception=True)
+def delete_restaurant(request, pk):
+    restaurant = get_object_or_404(Restaurant, rest_id=pk)
+    restaurant.delete()
+    return redirect('owner_home', pk=request.user.owner.owner_id)
+
+
+@permission_required('orders.add_feedback', raise_exception=True)
 def feedback(request, rest_id, cust_id, bill_id):
     if request.method == "POST":
         customer = get_object_or_404(Customer, cust_id=cust_id)
@@ -325,11 +333,12 @@ def feedback(request, rest_id, cust_id, bill_id):
         return render(request,'feedback.html',{'customer':customer,'restaurant':restaurant,'bill':bill})
 
 
+@permission_required('orders.view_feedback', raise_exception=True)
 def feedback_man(request, pk):
     feedbacks = Feedback.objects.filter(rest_id=pk)
     return render(request, 'feedback_man.html', {'feedbacks':feedbacks})
 
 
-@permission_required('orders.delete_ad')
+@permission_required('orders.delete_ad', raise_exception=True)
 def close_ad(request, pk):
     return redirect('customer_home', pk=pk)

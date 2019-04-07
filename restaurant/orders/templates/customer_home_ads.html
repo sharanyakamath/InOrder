@@ -14,8 +14,14 @@
         </div>
      </div>
 
-     <a href="{% url 'close_ad' customer.pk %}" class="btn btn-outline-success" role="button">Close Ad</a>
+<div class="alert alert-dismissible alert-warning">
+      <h4 class="alert-heading">Advertisement</h4>
+      <p class="mb-0">MOVIE MANIA!!! Watch top movies at your nearest theatre!! Book now at <a href="https://in.bookmyshow.com/mangaluru-mangalore" class="alert-link">BookMyShow</a>.</p>
+    </div>
 
+     <a href="{% url 'close_ad' customer.pk %}" class="btn btn-danger" role="button">Upgrade to Premium User to remove Ads</a>
+
+<br><br>
 
      <div class="row">
       <div class="col-sm-4">

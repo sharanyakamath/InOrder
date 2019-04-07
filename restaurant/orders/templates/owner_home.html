@@ -23,7 +23,7 @@
                   <th scope="col">View Restaurant</th>
                   <th scope="col">View Orders</th>
                   <th scope="col">View Feedback</th>
-
+                  <th scope="col">Delete Restaurant</th>
                 </tr>
               </thead>
               <tbody>
@@ -41,6 +41,7 @@
                       <a href="{% url 'restaurant_view_orders' restaurant.rest_id %}" class="btn btn-outline-danger" role="button">View Orders of this Restaurant</a>
                       </td>
                       <td><a href="{% url 'feedback_man' restaurant.rest_id %}" class="btn btn-outline-success" role="button">View Feedback</a></td>
+                      <td><a href="{% url 'delete_restaurant' restaurant.rest_id %}" class="btn btn-outline-danger" role="button">Delete</a></td>
 
                     </tr>
                 {% endfor %}
