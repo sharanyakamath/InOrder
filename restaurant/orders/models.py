@@ -10,12 +10,12 @@ class Manager(models.Model):
 
 class Restaurant(models.Model):
     rest_id = models.IntegerField(primary_key=True, default=1007)
-    name = models.CharField(max_length = 255)
+    name = models.CharField(max_length=255)
     address = models.TextField()
-    city = models.CharField(max_length = 255)
-    state = models.CharField(max_length = 255)
-    country = models.CharField(max_length = 255)
-    man_id = models.ForeignKey(Manager,on_delete = models.CASCADE, default=1)
+    city = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    country = models.CharField(max_length=255)
+    man_id = models.ForeignKey(Manager, on_delete = models.CASCADE, default=1)
     image = models.ImageField(upload_to='restaurant',default=None)
 
 

@@ -103,7 +103,7 @@ def manager_signup(request):
         return render(request, 'manager_signup.html')
 
 
-def manager_home(request,pk):
+def manager_home(request, pk):
     manager = get_object_or_404(Manager, pk=pk)
     restaurants = Restaurant.objects.filter(man_id=pk)
     return render(request, 'manager_home.html', {'manager': manager, 'restaurants':restaurants})
