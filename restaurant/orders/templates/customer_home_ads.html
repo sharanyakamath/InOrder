@@ -19,8 +19,15 @@
       <p class="mb-0">MOVIE MANIA!!! Watch top movies at your nearest theatre!! Book now at <a href="https://in.bookmyshow.com/mangaluru-mangalore" class="alert-link">BookMyShow</a>.</p>
     </div>
 
-     <a href="{% url 'close_ad' customer.pk %}" class="btn btn-danger" role="button">Upgrade to Premium User to remove Ads</a>
+    <div>
+    <a href="{% url 'close_ad' customer.pk %}" class="btn btn-danger" role="button">Close Ad</a>
 
+     <a href="{% url 'upgrade_to_premium' customer.pk %}" class="btn btn-danger" role="button">Upgrade to Premium User to remove Ads</a>
+
+     {% if error_message %}
+      <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
+   </div>
 <br><br>
 
      <div class="row">

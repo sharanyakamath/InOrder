@@ -37,5 +37,6 @@ urlpatterns = [
     path('feedback/<int:rest_id>/<int:cust_id>/<int:bill_id>',views.feedback,name='feedback'),
     path('feedback_man/<int:pk>',views.feedback_man,name='feedback_man'),
     path('close_ad/<int:pk>',views.close_ad,name='close_ad'),
+    path('upgrade_to_premium/<int:pk>',views.upgrade_to_premium,name='upgrade_to_premium'),
 
 ]

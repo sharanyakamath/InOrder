@@ -342,3 +342,17 @@ def feedback_man(request, pk):
 @permission_required('orders.delete_ad', raise_exception=True)
 def close_ad(request, pk):
     return redirect('customer_home', pk=pk)
+
+# @permission_required('orders.delete_ad', raise_exception=True)
+def upgrade_to_premium(request, pk):
+    no_of_bills = Bill.objects.filter(cust_id=pk).count()
+    if no_of_bills >= 3 :
+        group = Group.objects.get(name='Premium Customer')
+        request.user.groups.add(group)
+        return redirect('customer_home_ads', pk=pk)
+    else:
+        customer = get_object_or_404(Customer, pk=pk)
+        restaurants = Restaurant.objects.all()
+        return render(request, 'customer_home_ads.html', {'customer': customer, 'restaurants': restaurants, 'error_message': 'Not enough orders to upgrade'})
+        # return redirect('customer_home_ads', pk=pk)
+
