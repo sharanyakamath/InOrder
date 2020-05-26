@@ -2,11 +2,17 @@ from django.db import models
 import django.utils.timezone
 from django.contrib.auth.models import User
 
+class Owner(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    owner_id = models.IntegerField(primary_key=True)
 
 class Manager(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     man_id = models.IntegerField(primary_key=True) 
 
+class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    cust_id = models.IntegerField(primary_key=True)
 
 class Restaurant(models.Model):
     rest_id = models.IntegerField(primary_key=True, default=1007)
@@ -19,9 +25,6 @@ class Restaurant(models.Model):
     image = models.ImageField(upload_to='restaurant', default=None)
 
 
-class Customer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    cust_id = models.IntegerField(primary_key=True)
 
 
 class Item(models.Model):
@@ -55,11 +58,7 @@ class Feedback(models.Model):
 class Ad(models.Model):
     ad_id = models.IntegerField(primary_key=True, default=1)
 
-
-class Owner(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    owner_id = models.IntegerField(primary_key=True)
-
-
 class Offer(models.Model):
     offer_id = models.IntegerField(primary_key=True, default=1)
+
+
